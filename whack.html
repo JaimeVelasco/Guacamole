@@ -10,13 +10,7 @@
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
     <link href='http://fonts.googleapis.com/css?family=Lato:100,400,900' rel='stylesheet' type='text/css'>
 
-
-
-
 <style type="text/css">
-
-
-
 
 .board{
   
@@ -26,8 +20,6 @@
   cursor: url("assets/img/Handyman_HammerUp.png"), auto;
   
 }
-
-
 
 .board.cursor
 {
@@ -176,148 +168,113 @@ body{
   <script src="assets/js/jquery-1.11.0.js"></script>
   <script type="text/javascript">
 
+    // Get holes
+    var holes = $('.hole');
+
+    // Keep score
+    var score = 0;
+    var highscore = 0;
+    var speed = 1000;
+    var level = 1;
+    var start_time = 30;
 
 
-// Get holes
-var holes = $('.hole');
-
-// Keep score
-var score = 0;
-var highscore = 0;
-var speed = 1000;
-var level = 1;
-var start_time = 30;
-
-
-$('#game-over').hide();
-$('#timer').html(start_time);
-// Function to show the mole!
-var show = function() {
-    // Fade out any moles
-
-    $('.mole').fadeOut(1000);
-
-    
-    if ($('#timer').html() <= 1 ) {
-        stop_game();
-    } else {
-        // Get random hole
-        var rand = Math.floor(Math.random() * holes.length)
-        var hole = $(holes[rand]);
-        
-        // Add mole selected hole
-        hole.children().fadeIn(500);
-    }    
-}
-
-
-$(".changer").click(function() {
-    if ($(this).attr("class") == "changer") {
-      this.src = this.src.replace("_on","_off");
-    } else {
-      this.src = this.src.replace("_off","_on");
-    }
-    $(this).toggleClass("on");
-  });
-
-
-
-
-
-
-// Click event listener
-$('.mole').click(function() {
-
-    // Score 
-    $('#score').html(++score);
-    // Highscore
-    if (score > highscore) {
-        $('#highscore').html(++highscore);
-    }
-    // Level Up!
-    if (score % 9 == 0) {
-        $('#level').html(++level);
-        clearInterval(game_loop);
-        speed = speed - (speed - Math.floor(speed * .8));
-        game_loop = setInterval(show, speed);
-    }
-    // Hide the mole!
-    $(this).hide();
-});
-
-
-
-var start_timer = function() {
-    countdown = setInterval(function() {
-        var timer = $('#timer');
-        current = parseInt(timer.html());
-        timer.html(--current);
-    }, 1000);
-};
-
-
-var start_game = function() {
-    game_loop = setInterval(show, speed);
-    $('#start').attr('disabled', 'disabled');
-    $('#board').show();
-    $('#timer').show();
-    $('#score').html(score);
-    $('#level').html(level);
-    start_timer();
-};
-
-
-var stop_game = function() {
-    clearInterval(countdown);
-    clearInterval(game_loop);
-    $('#score').html('0');
+    $('#game-over').hide();
     $('#timer').html(start_time);
-    $('#start').removeAttr('disabled');
-    $('#board').hide();
-    $('#game-over').show();
-    speed = 1500;
-    score = 0;
-    level = 1;
-};
+    // Function to show the mole!
+    var show = function() {
+        // Fade out any moles
+
+        $('.mole').fadeOut(1000);
+
+        
+        if ($('#timer').html() <= 1 ) {
+            stop_game();
+        } else {
+            // Get random hole
+            var rand = Math.floor(Math.random() * holes.length)
+            var hole = $(holes[rand]);
+            
+            // Add mole selected hole
+            hole.children().fadeIn(500);
+        }    
+    }
+
+
+    $(".changer").click(function() {
+        if ($(this).attr("class") == "changer") {
+          this.src = this.src.replace("_on","_off");
+        } else {
+          this.src = this.src.replace("_off","_on");
+        }
+        $(this).toggleClass("on");
+      });
+
+    // Click event listener
+    $('.mole').click(function() {
+
+        // Score 
+        $('#score').html(++score);
+        // Highscore
+        if (score > highscore) {
+            $('#highscore').html(++highscore);
+        }
+        // Level Up!
+        if (score % 9 == 0) {
+            $('#level').html(++level);
+            clearInterval(game_loop);
+            speed = speed - (speed - Math.floor(speed * .8));
+            game_loop = setInterval(show, speed);
+        }
+        // Hide the mole!
+        $(this).hide();
+    });
 
 
 
+    var start_timer = function() {
+        countdown = setInterval(function() {
+            var timer = $('#timer');
+            current = parseInt(timer.html());
+            timer.html(--current);
+        }, 1000);
+    };
 
 
-
- $('#start').click(start_game);
-
-// image swap
-
-
-
-
-
-//change cursor image on click
-
-
-$("body").on("mousedown mouseup", function(e)
-{
-    $(".board").toggleClass("cursor");
-});
+    var start_game = function() {
+        game_loop = setInterval(show, speed);
+        $('#start').attr('disabled', 'disabled');
+        $('#board').show();
+        $('#timer').show();
+        $('#score').html(score);
+        $('#level').html(level);
+        start_timer();
+    };
 
 
+    var stop_game = function() {
+        clearInterval(countdown);
+        clearInterval(game_loop);
+        $('#score').html('0');
+        $('#timer').html(start_time);
+        $('#start').removeAttr('disabled');
+        $('#board').hide();
+        $('#game-over').show();
+        speed = 1500;
+        score = 0;
+        level = 1;
+    };
 
 
-
-  </script>
-    
+    $('#start').click(start_game);
 
 
+    //change cursor image on click
+    $("body").on("mousedown mouseup", function(e)
+    {
+        $(".board").toggleClass("cursor");
+    });
+  </script> 
 
-  
-
-
-
-
-
-  
 </body>
-
-
 </html>
